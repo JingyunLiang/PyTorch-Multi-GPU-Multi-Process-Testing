@@ -1,4 +1,4 @@
-# A Script for PyTorch Multi-GPU Testing
+# A Script for PyTorch Multi-GPU Multi-Process Testing
 
 In this repository, We provide a multi-GPU multi-process testing script that enables distributed testing in PyTorch (should also work for TensorFlow).
 

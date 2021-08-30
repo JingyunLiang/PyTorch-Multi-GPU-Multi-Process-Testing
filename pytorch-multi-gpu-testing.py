@@ -12,7 +12,8 @@ import multiprocessing
 
 # global variables
 total_gpu_num = 8
-max_process_per_gpu = 1  # todo: support max_process_per_gpu > 1
+# max_process_per_gpu=1 always works fine; max_process_per_gpu>=2 may get stuck on some computers or clusters.
+max_process_per_gpu = 1
 used_gpu_list = multiprocessing.Manager().list([0] * total_gpu_num)
 lock = multiprocessing.Lock()
 
@@ -33,10 +34,12 @@ class CNN(torch.nn.Module):
 def multi_gpu_testing_wrapper(model, input, index, gpu_id=None, available_gpu_num=1):
     '''
     Multi-GPU testing wrapper.
-    :param input: Model input, e.g. an image.
+    :param model: The PyTorch model (on cpu, NOT on cuda).
+    :param input: The model input, e.g. an image (on cpu, NOT on cuda).
+    :param index: Sample index (int).
     :param gpu_id: Given gpu_id. Only used in debugging.
-    :param available_gpu_num: Available GPU number.
-    :return: Model output, used GPU id and process id.
+    :param available_gpu_num: Available GPU number. Default: 1.
+    :return: Model output (on cpu, NOT on cuda), used GPU id and process id.
     '''
     # GPU assignment
     lock.acquire()
@@ -79,7 +82,7 @@ def main():
     os.environ["CUDA_VISIBLE_DEVICES"] = "0,1,2,3"
     assert available_gpu_num <= total_gpu_num
     if max_process_per_gpu > 1:
-        warnings.warn("The program may get stuck when max_process_per_gpu > 1.")
+        warnings.warn("max_process_per_gpu>=2 may get stuck on some computers or clusters.")
 
     # initialize input and model
     total_input_num = 10

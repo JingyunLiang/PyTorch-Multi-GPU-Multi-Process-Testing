@@ -11,6 +11,6 @@ We use the `multiprocessing` package for distributed testing on multiple GPUs. I
 ## Important To Know
 1, As each process is independent in terms of PyTorch, we need to load the model into GPU memory repeatedly before testing every sample, so our distirubted testing script may **NOT** save your time. It is suitable for cases where testing a single sample needs long runtime. For example, zero-shoting learning tasks and video recognition tasks.
 
-2, When we only has one testing process per GPU, it always works fine. But when we try to start multiple processes per GPU (i.e., `max_process_per_gpu>=2`), it may get **stuck** on some computers or clusters.
+2, When we only has one testing process per GPU (i.e., `max_process_per_gpu==1`), it always works fine. But when we try to start multiple processes per GPU (i.e., `max_process_per_gpu>=2`), it may **get stuck** on some computers or clusters.
 
 3, When there is a runtime error (e.g., out-of-memory error) in one testing process, it will **NOT** impact other processes. Be sure to check that the output number and input number are equal.

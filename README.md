@@ -13,4 +13,4 @@ We use the `multiprocessing` package for distributed testing on multiple GPUs. I
 
 2, When we only has one testing process per GPU (i.e., `max_process_per_gpu==1`), it always works fine. But when we try to start multiple processes per GPU (i.e., `max_process_per_gpu>=2`), it may **get stuck** on some computers or clusters.
 
-3, When there is a runtime error (e.g., out-of-memory error) in one testing process, it will **NOT** impact other processes. Be sure to check that the output number and input number are equal.
+3, When there is a runtime error (e.g., out-of-memory error) in one testing process, it will **NOT** output error message or impact other processes. Be sure to check that the output number and input number are equal after all processes are finished.
